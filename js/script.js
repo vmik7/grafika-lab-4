@@ -1,9 +1,11 @@
 "use strict"
 
-let canvas = new fabric.Canvas('canvas', {
-    width: 500,
-    height: 500
-});
+// Ширина и высота экрана
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+// Масштаб логотипа
+let sc = Math.min(vh * 0.8 / 500, vw * 0.8 / 500);
 
 // Цвет заливки
 let logoColor = '#F05133';
@@ -15,15 +17,21 @@ let secondColor = '#24292E';
 let easingInName = 'easeInOutCubic';
 let easingOutName = 'easeInOutCubic';
 
+// Холст на всю страницу
+let canvas = new fabric.Canvas('canvas', {
+    width: vw,
+    height: vh
+});
+
 // Фоновый круг
 let backgroundCircle = new fabric.Circle({
     selectable: false,
-    radius: 220, 
+    radius: 240 * sc, 
     fill: logoColor, 
     originX: 'center',
     originY: 'center',
-    left: 250,
-    top: 250
+    top: vh / 2,
+    left: vw / 2
 });
 canvas.add(backgroundCircle);
 
@@ -32,22 +40,22 @@ let rect = new fabric.Rect({
     selectable: false,
     originX: 'center',
     originY: 'center',
-    left: 250,
-    top: 250,
+    left: 110 * sc, // 250 - 110 = 140;
+    top: 110 * sc,
     fill: '#fff',
-    width: 220,
-    height: 220,
+    width: 220 * sc,
+    height: 220 * sc,
     angle: 45,
-    rx: 20,
-    ry: 20
+    rx: 20 * sc,
+    ry: 20 * sc
 });
 // canvas.add(rect);
 
 // Координаты точек
 let circlesPositions = [
-    { x: 250, y: 185 },
-    { x: 315, y: 250 },
-    { x: 250, y: 315 }
+    { x: 110 * sc, y: 45 * sc }, // { x: 250, y: 185 },
+    { x: 175 * sc, y: 110 * sc },
+    { x: 110 * sc, y: 175 * sc }
 ];
 let smallCircles = [];
 circlesPositions.forEach((item, i) => {
@@ -55,7 +63,7 @@ circlesPositions.forEach((item, i) => {
         selectable: false,
         originX: 'center',
         originY: 'center',
-        radius: 25,
+        radius: 25 * sc,
         fill: logoColor,
         left: item.x,
         top: item.y
@@ -65,12 +73,12 @@ circlesPositions.forEach((item, i) => {
 
 // Вертикальная линия
 let verticalLine = new fabric.Line(
-    [250, 185, 250, 315],
+    [110 * sc, 45 * sc, 110 * sc, 175 * sc],
     {
         selectable: false,
         originX: 'center',
         originY: 'center',
-        strokeWidth: 20,
+        strokeWidth: 20 * sc,
         stroke: logoColor
     }
 );
@@ -78,12 +86,12 @@ let verticalLine = new fabric.Line(
 
 // Линия под 45
 let angleLine = new fabric.Line(
-    [204, 139, 315, 250],
+    [64 * sc, 0 * sc, 175 * sc, 110 * sc],
     {
         selectable: false,
         originX: 'center',
         originY: 'center',
-        strokeWidth: 20,
+        strokeWidth: 20 * sc,
         stroke: logoColor
     }
 );
@@ -96,7 +104,8 @@ let gitLogo = new fabric.Group([
     selectable: false,
     originX: 'center',
     originY: 'center',
-    centeredRotation: true
+    top: vh / 2,
+    left: vw / 2
 });
 canvas.add(gitLogo);
 
@@ -107,12 +116,12 @@ canvas.add(gitLogo);
 
 // Анимация основная
 let animationIn = () => {
-    backgroundCircle.animate('scaleX', 2, {
+    backgroundCircle.animate('scaleX', 10, {
         duration: 1000,
         onChange: canvas.renderAll.bind(canvas),
         easing: fabric.util.ease[easingInName]
     });
-    backgroundCircle.animate('scaleY', 2, {
+    backgroundCircle.animate('scaleY', 10, {
         duration: 1000,
         onChange: canvas.renderAll.bind(canvas),
         easing: fabric.util.ease[easingInName]
@@ -136,12 +145,12 @@ let animationIn = () => {
         onChange: canvas.renderAll.bind(canvas),
         easing: fabric.util.ease[easingInName],
     });
-    gitLogo.animate('scaleX', 1.3, {
+    gitLogo.animate('scaleX', 1.6, {
         duration: 1000,
         onChange: canvas.renderAll.bind(canvas),
         easing: fabric.util.ease[easingInName],
     });
-    gitLogo.animate('scaleY', 1.3, {
+    gitLogo.animate('scaleY', 1.6, {
         duration: 1000,
         onChange: canvas.renderAll.bind(canvas),
         easing: fabric.util.ease[easingInName],
