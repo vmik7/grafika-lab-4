@@ -17,3 +17,87 @@ canvas {
     user-select: none;
     pointer-events: none;
 }
+
+
+.wrapper {
+    position: fixed;
+    padding: 20px;
+}
+.wrapper_grid-scale {
+    left: 0;
+    bottom: 0;
+    display: flex;
+}
+.wrapper_graph-angle {
+    bottom: 0;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+}
+.wrapper_graph-options {
+    right: 0;
+    bottom: 0;
+    display: flex;
+}
+
+.button {
+    border: 0;
+    background: SlateBlue;
+    display: block;
+    color: #fff;
+
+    font-size: 25px;
+
+    min-width: 40px;
+    height: 40px;
+    line-height: 40px;
+
+    transition: all 0.3s ease;
+}
+.button:hover, .button:focus {
+    background: DarkSlateBlue;
+    cursor: pointer;
+    outline: 0;
+}
+.button_grid-plus {
+    font-size: 26px;
+}
+.button_grid-minus {
+    font-size: 26px;
+}
+
+.angle_text {
+    font-weight: bold;
+    margin-right: 10px;
+}
+.angle_input {
+    height: 40px;
+    width: 100px;
+    border: 2px solid DarkSlateBlue;
+    border-radius: 5px;
+    padding: 0 10px;
+
+    font: inherit;
+}
+
+.button_graph-plus {
+    font-size: 30px;
+}
+.button_graph-minus {
+    font-size: 30px;
+}
+.button_graph-left {
+    transform: rotate(-90deg);
+    font-size: 20px;
+}
+.button_graph-right {
+    transform: rotate(90deg);
+    font-size: 20px;
+}
+.button_graph-up {
+    transform: rotate(0deg);
+    font-size: 20px;
+}
+.button_graph-down {
+    transform: rotate(180deg);
+    font-size: 20px;
+}
