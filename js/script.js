@@ -32,6 +32,9 @@ let gridColor = 'Gainsboro';
 // Цвет осей
 let axesColor = 'Purple';
 
+// Цвет подписей
+let textColor = 'Black';
+
 // Цвет графика
 let graphColor = 'Crimson';
 
@@ -94,16 +97,67 @@ let lineHorizintal = (y, color = '#000', dash = []) => {
 
 // Отрисовка сетки
 let grid = () => {
-  for (let i = x0; i < canvas.width; i += dx)
-    lineVertical(i, gridColor, [5, 10]);
-  for (let i = x0; i >= 0; i -= dx)
-    lineVertical(i, gridColor, [5, 10]);
-  for (let i = y0; i < canvas.height; i += dx) 
-    lineHorizintal(i, gridColor, [5, 10]);
-  for (let i = y0; i >= 0; i -= dx)
-    lineHorizintal(i, gridColor, [5, 10]);
+
+  // Вертикальные линии
+  for (let i = x0; i < canvas.width; i += dx) {
+    lineVertical(i, gridColor, [2, 2]);
+  }
+  for (let i = x0; i >= 0; i -= dx) {
+    lineVertical(i, gridColor, [2, 2]);
+  }
+
+  // Горизонтальные линии
+  for (let i = y0; i < canvas.height; i += dx) {
+    lineHorizintal(i, gridColor, [2, 2]);
+  }    
+  for (let i = y0; i >= 0; i -= dx) {
+    lineHorizintal(i, gridColor, [2, 2]);
+  }
+
+  ctx.font = `${10 / 30 * dx}px Arial, sans-serif`;
+  ctx.fillStyle = textColor;
+
+  // Ось OY
+  ctx.textAlign = 'right';
   lineVertical(x0, axesColor);
+  for (let i = 1; y0 - i * dx > 20; i++) {
+    ctx.fillText('' + i, x0 - (10 / 30 * dx), y0 - i * dx + (3 / 30 * dx));
+    ctx.beginPath();
+    ctx.strokeStyle = textColor;
+    ctx.moveTo(x0 - (4 / 30 * dx), y0 - i * dx);
+    ctx.lineTo(x0 + (4 / 30 * dx), y0 - i * dx);
+    ctx.stroke();
+  }
+  for (let i = -1; y0 - i * dx < canvas.height - 80; i--) {
+    ctx.fillText('' + i, x0 - (10 / 30 * dx), y0 - i * dx + (3 / 30 * dx));
+    ctx.beginPath();
+    ctx.strokeStyle = textColor;
+    ctx.moveTo(x0 - (4 / 30 * dx), y0 - i * dx);
+    ctx.lineTo(x0 + (4 / 30 * dx), y0 - i * dx);
+    ctx.stroke();
+  }
+
+  // Ось OX
+  ctx.textAlign = 'center';
   lineHorizintal(y0, axesColor);
+  for (let i = 1; x0 + i * dx < canvas.width; i++) {
+    ctx.fillText('' + i, x0 + i * dx, y0 + (17 / 30 * dx));
+    ctx.beginPath();
+    ctx.strokeStyle = textColor;
+    ctx.moveTo(x0 + i * dx, y0 - (4 / 30 * dx));
+    ctx.lineTo(x0 + i * dx, y0 + (4 / 30 * dx));
+    ctx.stroke();
+  }
+  for (let i = -1; x0 + i * dx > 20; i--) {
+    ctx.fillText('' + i, x0 + i * dx, y0 + (17 / 30 * dx));
+    ctx.beginPath();
+    ctx.strokeStyle = textColor;
+    ctx.moveTo(x0 + i * dx, y0 - (4 / 30 * dx));
+    ctx.lineTo(x0 + i * dx, y0 + (4 / 30 * dx));
+    ctx.stroke();
+  }
+
+  ctx.fillText('0', x0 - (5 / 30 * dx), y0 + (10 / 30 * dx));
 };
 
 let plot = (x, y) => {
