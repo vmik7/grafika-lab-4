@@ -170,8 +170,8 @@ let plot = (x, y) => {
 // Отрисовка графика
 let graph = () => {
   for (let t = graphTMin; t <= graphTMax; t += (graphTMax - graphTMin) / graphSteps) {
-    let x = t * Math.sin(t);
-    let y = t * Math.cos(t);
+    let x = 2 * (Math.sin(t) ** 3);
+    let y = 2 * (Math.cos(t) ** 3);
     let angle = -graphAngle * Math.PI / 180;
     let draw_x = x0 + graphOffsetX * dx + graphScale * dx * (x * Math.cos(angle) + y * Math.sin(angle));
     let draw_y = y0 - graphOffsetY * dx - graphScale * dx * (-x * Math.sin(angle) + y * Math.cos(angle));
