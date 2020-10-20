@@ -109,8 +109,6 @@ let drawLine = (x1, y1, x2, y2, stroke) => {
     }
 };
 
-// drawSpline([{ x: 0, y: 0 }, { x: 100, y: 100 }, { x: 20, y: 50 }, { x: 400, y: 200 }, { x: 100, y: 0 }], 'black')
-
 // Отрисовка окружности по алгоритму Брезенхема
 let drawCircle = (x0, y0, r, stroke, fill) => {
     let x = 0, y = r, gap = 0, delta = (2 - 2 * r);
@@ -213,3 +211,50 @@ let drawSpline = (arr, stroke) => {
         }
     }
 }
+
+
+
+
+// Волны
+drawSpline([
+    { x: vw / 2 - 200, y: vh / 2 + 150 },
+    { x: vw / 2 - 150, y: vh / 2 + 100 },
+    { x: vw / 2 - 100, y: vh / 2 + 150 },
+    { x: vw / 2 - 50, y: vh / 2 + 100 },
+    { x: vw / 2, y: vh / 2 + 150 },
+    { x: vw / 2 + 50, y: vh / 2 + 100 },
+    { x: vw / 2 + 100, y: vh / 2 + 150 },
+    { x: vw / 2 + 150, y: vh / 2 + 100 },
+    { x: vw / 2 + 200, y: vh / 2 + 150 }
+], 'DeepSkyBlue');
+
+// Кораблик
+drawSpline([
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+    { x: vw / 2 - 100, y: vh / 2 + 80 },
+    { x: vw / 2 - 50, y: vh / 2 + 100 },
+    { x: vw / 2 + 50, y: vh / 2 + 100 },
+    { x: vw / 2 + 100, y: vh / 2 + 80 },
+    { x: vw / 2 + 150, y: vh / 2 + 50 },
+
+    { x: vw / 2 + 150, y: vh / 2 + 50 },
+    { x: vw / 2 + 150, y: vh / 2 + 50 },
+
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+    { x: vw / 2 - 150, y: vh / 2 + 50 },
+], 'black');
+fillArea(vw / 2, vh / 2 + 80, 'Sienna');
+
+// Паруса
+drawLine(vw / 2, vh / 2 + 50, vw / 2, vh / 2 - 200, 'black');
+drawCircle(vw / 2, vh / 2 - 203, 3, 'black', 'black');
+drawTriangle(vw / 2 - 10, vh / 2 - 160, vw / 2 - 10, vh / 2 + 40, vw / 2 - 100, vh / 2 - 60, 'LightSkyBlue', 'LightCyan');
+drawTriangle(vw / 2 + 10, vh / 2 - 140, vw / 2 + 10, vh / 2 + 20, vw / 2 + 70, vh / 2 + 10, 'LightSkyBlue', 'LightCyan');
+drawRect(vw / 2 + 10, vh / 2 - 190, 40, 20, 'Brown', 'Tomato');
+
+// Солнце
+drawCircle(vw / 2 + 150, vh / 2 - 250, 20, 'Gold', 'LemonChiffon');
