@@ -205,8 +205,8 @@ let drawSpline = (arr, stroke) => {
         let points = {};
         for (let j = 0; j < num; j++) {
             let t = j / num;
-            points.x = (arrs.a[0] + t * (arrs.a[1] + t * (arrs.a[2] + t * arrs.a[3])));
-            points.y = (arrs.b[0] + t * (arrs.b[1] + t * (arrs.b[2] + t * arrs.b[3])));
+            points.x = Math.floor(arrs.a[0] + t * (arrs.a[1] + t * (arrs.a[2] + t * arrs.a[3])));
+            points.y = Math.floor(arrs.b[0] + t * (arrs.b[1] + t * (arrs.b[2] + t * arrs.b[3])));
             plot(points.x, points.y, stroke);
         }
     }
