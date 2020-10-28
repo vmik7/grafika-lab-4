@@ -254,7 +254,7 @@ let triangulatePolygon = (arr) => {
     let polygon = arr.slice();
     polygon.pop();
 
-    let colors = ['Gold', 'Yellow', 'Orange', 'Khaki', 'PeachPuff'];
+    let colors = ['Gold', 'Yellow', 'Orange', 'DarkOrange', 'Tomato'];
 
     while (polygon.length >= 3) {
         if (isLeft(polygon[0], polygon[1], polygon[2]) && !innerPoints(polygon)) {            
