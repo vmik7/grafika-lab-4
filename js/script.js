@@ -18,6 +18,10 @@ let ctx = canvas.getContext("2d");
 canvas.width = vw;
 canvas.height = vh;
 
+
+
+// ФУНКЦИИ ГРАФИЧЕСКОЙ БИБЛИОТЕКИ
+
 // Отрисовка пикселя
 let plot = (x, y, color) => {
     if (x >= 0 && y >= 0 && x <= canvas.width && y <= canvas.height) {
@@ -46,7 +50,7 @@ let fillArea = (x, y, color) => {
             q[s + 3] = { x: x, y: y - 1 };
         }
     }
-}
+};
 
 // Отрисовка линии по алгоритму Брезенхема
 let drawLine = (x1, y1, x2, y2, stroke) => {
@@ -153,20 +157,17 @@ let drawRect = (x0, y0, dx, dy, stroke, fill) => {
 };
 
 // Отрисовка треугольника
-let drawTriangle = (x0, y0, x1, y1, x2, y2, stroke, fill) => {
+let drawTriangle = (x0, y0, x1, y1, x2, y2, stroke, fill) => {  
     drawLine(x0, y0, x1, y1, stroke);
     drawLine(x1, y1, x2, y2, stroke);
     drawLine(x2, y2, x0, y0, stroke);
 
     if (fill && !(x0 == x1 && x1 == x2) && !(y0 == y1 && y1 == y0)) {
 
-        let a = ((y1 + y2) / 2 - y0) / ((x1 + x2) / 2 - x0);
-        let b = ((y0 + y2) / 2 - y1) / ((x0 + x2) / 2 - x1);
+        let cx = Math.floor((x0 + x1 + x2) / 3);
+        let cy = Math.floor((y0 + y1 + y2) / 3);
 
-        let inner_x = (a * x0 - b * x1 + y1 - y0) / (a - b);
-        let inner_y = (inner_x - x0) * a + y0;
-
-        fillArea(Math.floor(inner_x), Math.floor(inner_y), fill);
+        fillArea(cx, cy, fill);
     }
 };
 
@@ -210,51 +211,109 @@ let drawSpline = (arr, stroke) => {
             plot(points.x, points.y, stroke);
         }
     }
-}
+};
 
 
 
+// ФУНКЦИИ ДЛЯ ТРИАНГУЛЯЦИИ
 
-// Волны
-drawSpline([
-    { x: vw / 2 - 200, y: vh / 2 + 150 },
-    { x: vw / 2 - 150, y: vh / 2 + 100 },
-    { x: vw / 2 - 100, y: vh / 2 + 150 },
-    { x: vw / 2 - 50, y: vh / 2 + 100 },
-    { x: vw / 2, y: vh / 2 + 150 },
-    { x: vw / 2 + 50, y: vh / 2 + 100 },
-    { x: vw / 2 + 100, y: vh / 2 + 150 },
-    { x: vw / 2 + 150, y: vh / 2 + 100 },
-    { x: vw / 2 + 200, y: vh / 2 + 150 }
-], 'DeepSkyBlue');
+// Площадь треугольника
+let triangleSquare = (a, b, c) => {
+    return 1 / 2 * Math.abs((b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y));
+};
 
-// Кораблик
-drawSpline([
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
+// Принадлежность точки треугольнику
+let triangleInner = (a, b, c, d) => {
+    return triangleSquare(a, b, c) == triangleSquare(a, b, d) + triangleSquare(b, c, d) + triangleSquare(c, a, d);
+};
 
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
-    { x: vw / 2 - 100, y: vh / 2 + 80 },
-    { x: vw / 2 - 50, y: vh / 2 + 100 },
-    { x: vw / 2 + 50, y: vh / 2 + 100 },
-    { x: vw / 2 + 100, y: vh / 2 + 80 },
-    { x: vw / 2 + 150, y: vh / 2 + 50 },
+// Левая тройка векторов
+let isLeft = (a, b, c) => {
+    const ab = { x: b.x - a.x, y: b.y - a.y };
+    const ac = { x: c.x - a.x, y: c.y - a.y };
+    return ab.x * ac.y - ac.x * ab.y > 0;
+};
 
-    { x: vw / 2 + 150, y: vh / 2 + 50 },
-    { x: vw / 2 + 150, y: vh / 2 + 50 },
+// Проверка наличия других точек унцтри треугольника
+let innerPoints = (p) => {
+    const a = p[0], b = p[1], c = p[2];
 
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
-    { x: vw / 2 - 150, y: vh / 2 + 50 },
-], 'black');
-fillArea(vw / 2, vh / 2 + 80, 'Sienna');
+    for (let i = 3; i < p.length; i++) {
+        if (triangleInner(a, b, c, p[i])) return true;
+    }
 
-// Паруса
-drawLine(vw / 2, vh / 2 + 50, vw / 2, vh / 2 - 200, 'black');
-drawCircle(vw / 2, vh / 2 - 203, 3, 'black', 'black');
-drawTriangle(vw / 2 - 10, vh / 2 - 160, vw / 2 - 10, vh / 2 + 40, vw / 2 - 100, vh / 2 - 60, 'LightSkyBlue', 'LightCyan');
-drawTriangle(vw / 2 + 10, vh / 2 - 140, vw / 2 + 10, vh / 2 + 20, vw / 2 + 70, vh / 2 + 10, 'LightSkyBlue', 'LightCyan');
-drawRect(vw / 2 + 10, vh / 2 - 190, 40, 20, 'Brown', 'Tomato');
+    return false;
+};
 
-// Солнце
-drawCircle(vw / 2 + 150, vh / 2 - 250, 20, 'Gold', 'LemonChiffon');
+// Триангуляция многоугольника
+let triangulatePolygon = (arr) => {
+
+    let n = arr.length;
+    let point = arr[n - 1];
+
+    let polygon = arr.slice();
+    polygon.pop();
+
+    let colors = ['Gold', 'Yellow', 'Orange', 'Khaki', 'PeachPuff'];
+
+    while (polygon.length >= 3) {
+        if (isLeft(polygon[0], polygon[1], polygon[2]) && !innerPoints(polygon)) {            
+            drawTriangle(polygon[0].x, polygon[0].y, polygon[1].x, polygon[1].y, polygon[2].x, polygon[2].y, 'black', (triangleInner(polygon[0], polygon[1], polygon[2], point) ? null : colors[Math.round(Math.random() * (colors.length - 1))]));
+            polygon.splice(1, 1);
+        }
+        else {
+            if (n < 0) {
+                alert('Многоугольник имеет самопересечения, так не честно!');   
+                return;  
+            }
+            const tmp = polygon[0];
+            polygon.shift();
+            polygon.push(tmp);
+            n--;
+        }
+    }
+};
+
+
+
+// ПОСТРОЕНИЕ МНОГОУГОЛЬНИКА
+
+// Массив с точками
+let points = [];
+
+// Добавляем точку при клике
+
+window.addEventListener('click', (event) => {
+    points.push({ x: event.clientX, y: event.clientY });
+    render();
+});
+
+let render = () => {
+
+    // Очищаем канвас
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Отрисовка точек
+
+    points.forEach((p) => {
+        drawCircle(p.x, p.y, 3, 'black');
+    });
+
+    // Отрисовка ребер
+
+    // for (let i = 0; i < points.length; i++) {
+    //     let j = (i + 1) % points.length;
+    //     drawLine(points[i].x, points[i].y, points[j].x, points[j].y, 'black');
+    // }
+
+    // Запуск триангуляции 
+
+    triangulatePolygon(points);
+};
+
+
+
+// let triangle1 = [ {x: 307, y: 348}, {x: 178, y: 249}, {x: 308, y: 179} ];
+// let innerPoint = {x: 266, y: 273};
+
+// console.log(triangleInner(triangle1[0], triangle1[1], triangle1[2], innerPoint));
